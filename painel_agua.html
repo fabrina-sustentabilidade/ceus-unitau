@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Observatório UNITAU Sustentável — Água</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* =============================================
+   OBSERVATÓRIO UNITAU SUSTENTÁVEL — ÁGUA
+   Paleta oficial Manual de Identidade Visual UNITAU
+   Azul UNITAU:  #043269 (Pantone 654 C)
+   Azul claro:   #009FE3 (Process Cyan C)
+   Verde sem.:   #6ECA97 (Pantone 346 C)
+   Amarelo sem.: #DDDC00 (Pantone 396 C)
+   Vermelho sem.:#CD1C17 (Pantone 179 C)
+   ODS 6:        #25BBE9 (Pantone 319 C)
+   ============================================= */
+:root {
+  --unitau-navy:  #043269;
+  --unitau-cyan:  #009FE3;
+  --unitau-green: #6ECA97;
+  --unitau-yellow:#DDDC00;
+  --unitau-red:   #CD1C17;
+  --ods6:         #25BBE9;
+  --ods6-dark:    #0E7FA3;
+  --ods6-light:   #D6F3FB;
+  --sem-v:        #6ECA97;
+  --sem-a:        #DDDC00;
+  --sem-r:        #CD1C17;
+  --bg:           #F4F7FB;
+  --card:         #FFFFFF;
+  --border:       #E2EAF4;
+  --txt-main:     #043269;
+  --txt-muted:    #5A7A9A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--txt-main);-webkit-text-size-adjust:100%;}
+
+/* HEADER */
+.header{background:var(--unitau-navy);padding:14px 16px 12px;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.logo-block{display:flex;align-items:center;gap:10px;}
+.ceus-squares{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:34px;height:34px;flex-shrink:0;}
+.sq{border-radius:3px;}
+.sq1{background:#6ECA97;}.sq2{background:#1F9DB1;}.sq3{background:#DDDC00;}.sq4{background:#25BBE9;}
+.brand-main{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;line-height:1.2;}
+.brand-tagline{font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;font-style:italic;}
+.ods-badge{display:flex;align-items:center;gap:7px;background:var(--ods6);border-radius:8px;padding:5px 10px;flex-shrink:0;}
+.ods-num{font-family:'Nunito',sans-serif;font-weight:800;font-size:18px;color:#fff;line-height:1;}
+.ods-label{font-size:9px;color:rgba(255,255,255,0.9);line-height:1.3;max-width:64px;}
+.header-meta{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mes-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);}
+.piloto-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(221,220,0,0.2);border:1px solid rgba(221,220,0,0.5);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#DDDC00;}
+
+/* NAV */
+.nav{display:flex;background:#fff;border-bottom:2px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:90px;z-index:99;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{font-family:'Nunito Sans',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:11px 16px;border:none;background:transparent;color:var(--txt-muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
+.nav-btn.active{color:var(--unitau-navy);border-bottom-color:var(--ods6);}
+
+/* BODY */
+.body{padding:14px;max-width:640px;margin:0 auto;}
+.tab{display:none;}.tab.active{display:block;}
+
+/* CARD ESTRUTURA */
+.estrutura-card{background:linear-gradient(135deg,var(--unitau-navy) 0%,#0a4a96 100%);border-radius:12px;padding:14px 16px 16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.estrutura-card::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(37,187,233,0.15);}
+.estrutura-card::after{content:'';position:absolute;bottom:-30px;right:30px;width:70px;height:70px;border-radius:50%;background:rgba(110,202,151,0.12);}
+.estrutura-title{font-size:9px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.estrutura-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;position:relative;z-index:1;}
+.estrutura-item{display:flex;align-items:center;gap:8px;}
+.estrutura-icon{font-size:18px;line-height:1;flex-shrink:0;}
+.estrutura-num{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1;}
+.estrutura-label{font-size:9px;color:rgba(255,255,255,0.6);margin-top:2px;line-height:1.2;}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 12px;position:relative;overflow:hidden;}
+.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
+.kpi-label{font-size:9px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;}
+.info-btn{background:none;border:none;cursor:pointer;color:var(--txt-muted);font-size:13px;line-height:1;padding:0 0 0 4px;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:color .15s;}
+.info-btn:hover,.info-btn:focus{color:var(--ods6);}
+.kpi-value{font-family:'Nunito',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--unitau-navy);}
+.kpi-unit{font-size:9px;color:var(--txt-muted);margin-top:4px;}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;margin-top:8px;}
+.chip-v{background:#E8F5E9;color:#1B6B3A;}
+.chip-a{background:#FAFAC0;color:#6B6600;}
+.chip-r{background:#FFEBEE;color:#8B0D0D;}
+.chip-p{background:#F3F4F6;color:#6B7280;}
+.chip-dot{width:6px;height:6px;border-radius:50%;}
+.chip-v .chip-dot{background:var(--sem-v);}
+.chip-a .chip-dot{background:#AAAA00;}
+.chip-r .chip-dot{background:var(--sem-r);}
+.chip-p .chip-dot{background:#9CA3AF;}
+
+/* SECTION TITLE */
+.sec-title{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;margin:16px 0 10px;}
+
+/* CHART */
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 12px;margin-bottom:14px;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.chart-title{font-size:11px;font-weight:700;color:var(--unitau-navy);}
+.chart-wrap{position:relative;width:100%;}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--txt-muted);}
+.leg-dot{width:10px;height:10px;border-radius:2px;}
+
+/* ODS STRIP */
+.ods-strip{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.ods-strip-label{font-size:9px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;width:100%;}
+.ods-item{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:var(--unitau-navy);}
+.ods-icon{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;color:#fff;flex-shrink:0;}
+.ods-soon{font-size:9px;color:var(--txt-muted);margin-left:2px;}
+
+/* CAMPUS */
+.campus-list{display:flex;flex-direction:column;gap:8px;}
+.campus-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 13px;}
+.campus-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.campus-name{font-size:13px;font-weight:700;color:var(--unitau-navy);}
+.campus-sub{font-size:10px;color:var(--txt-muted);margin-top:1px;}
+.campus-val{font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--unitau-navy);text-align:right;white-space:nowrap;}
+.campus-pc{font-size:9px;color:var(--txt-muted);text-align:right;}
+.bar-track{height:5px;border-radius:3px;background:#EEF2F8;overflow:hidden;margin-bottom:8px;}
+.bar-fill{height:100%;border-radius:3px;width:0;transition:width .9s cubic-bezier(.25,.46,.45,.94);}
+
+/* METODOLOGIA */
+.meto-grid{display:flex;flex-direction:column;gap:10px;}
+.meto-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--ods6);}
+.meto-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.meto-title{font-size:12px;font-weight:700;color:var(--unitau-navy);}
+.meto-body{font-size:11px;color:var(--txt-muted);line-height:1.7;}
+.meto-body strong{color:var(--unitau-navy);font-weight:700;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.4);align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px 16px 0 0;padding:20px 20px 32px;width:100%;max-width:640px;animation:slideUp .2s ease;}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:#DDE3EE;margin:0 auto 16px;}
+.modal-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--unitau-navy);margin-bottom:10px;}
+.modal-body{font-size:13px;color:#444;line-height:1.7;}
+.modal-close{display:block;width:100%;margin-top:20px;background:var(--unitau-navy);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* FOOTER */
+.footer{background:var(--unitau-navy);padding:14px 16px;text-align:center;font-size:10px;color:rgba(255,255,255,0.5);line-height:1.8;margin-top:20px;}
+.footer strong{color:rgba(255,255,255,0.85);}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo-block">
+      <div class="ceus-squares">
+        <div class="sq sq1"></div><div class="sq sq2"></div>
+        <div class="sq sq3"></div><div class="sq sq4"></div>
+      </div>
+      <div>
+        <div class="brand-main">Observatório UNITAU Sustentável</div>
+        <div class="brand-tagline">Monitorando água, energia e sustentabilidade na UNITAU.</div>
+      </div>
+    </div>
+    <div class="ods-badge">
+      <div><div style="font-size:8px;color:rgba(255,255,255,.7);letter-spacing:.1em;">ODS</div><div class="ods-num">6</div></div>
+      <div class="ods-label">Água potável e saneamento</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span class="mes-pill">💧 Água · out/2025</span>
+    <span class="piloto-pill">⚠️ Versão piloto</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="goTab('inst',this)">Institucional</button>
+  <button class="nav-btn" onclick="goTab('campus',this)">Por campus</button>
+  <button class="nav-btn" onclick="goTab('meto',this)">Metodologia</button>
+</nav>
+
+<div class="body">
+
+<!-- ABA INSTITUCIONAL -->
+<div class="tab active" id="tab-inst">
+
+  <div class="estrutura-card">
+    <div class="estrutura-title">
+      <span>Estrutura monitorada</span>
+      <button class="info-btn" style="color:rgba(255,255,255,.5);" onclick="openModal('estrutura')" aria-label="Saiba mais">ⓘ</button>
+    </div>
+    <div class="estrutura-grid">
+      <div class="estrutura-item"><div class="estrutura-icon">🏢</div><div><div class="estrutura-num" id="ev-inst">—</div><div class="estrutura-label">unidades mapeadas</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">📐</div><div><div class="estrutura-num" id="ev-area">—</div><div class="estrutura-label">m² monitorados</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">🎓</div><div><div class="estrutura-num" id="ev-pop">—</div><div class="estrutura-label">pessoas na comunidade</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">💧</div><div><div class="estrutura-num" id="ev-lig">—</div><div class="estrutura-label">ligações SABESP</div></div></div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--ods6);"></div>
+      <div class="kpi-top"><div class="kpi-label">Consumo total</div><button class="info-btn" onclick="openModal('total')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-total">—</div>
+      <div class="kpi-unit">m³ · out/2025 (Camada 1)</div>
+      <div class="chip chip-a"><span class="chip-dot"></span>dentro do esperado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--unitau-green);"></div>
+      <div class="kpi-top"><div class="kpi-label">Per capita</div><button class="info-btn" onclick="openModal('percapita')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-pc">—</div>
+      <div class="kpi-unit">L / pessoa / dia útil</div>
+      <div class="chip chip-v"><span class="chip-dot"></span>abaixo da média</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:#DDDC00;"></div>
+      <div class="kpi-top"><div class="kpi-label">Por m²</div><button class="info-btn" onclick="openModal('m2')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-m2">—</div>
+      <div class="kpi-unit">L / m² / mês</div>
+      <div class="chip chip-a"><span class="chip-dot"></span>dentro do esperado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--unitau-navy);"></div>
+      <div class="kpi-top"><div class="kpi-label">Ligações SABESP</div><button class="info-btn" onclick="openModal('ligacoes')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-lig">—</div>
+      <div class="kpi-unit">contas monitoradas</div>
+      <div class="chip chip-v"><span class="chip-dot"></span>cobertura completa</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Histórico mensal — m³ total (jun–out/2025)</span>
+      <button class="info-btn" onclick="openModal('grafico_hist')" aria-label="Entenda este gráfico">ⓘ</button>
+    </div>
+    <div class="chart-wrap" style="height:185px;">
+      <canvas id="chartHist" role="img" aria-label="Consumo mensal de água: jun 2119, jul 2263, ago 2059, set 2312, out 2346 m³"></canvas>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--ods6);"></div>consumo mensal</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--unitau-green);height:2px;border-radius:0;margin-top:4px;"></div>média histórica</div>
+      <div class="leg"><div class="leg-dot" style="background:#AAAA00;"></div>out/25</div>
+    </div>
+  </div>
+
+  <div class="ods-strip">
+    <div class="ods-strip-label">Alinhado aos objetivos de desenvolvimento sustentável — ONU</div>
+    <div class="ods-item"><div class="ods-icon" style="background:#25BBE9;">6</div>Água e saneamento</div>
+    <div class="ods-item"><div class="ods-icon" style="background:#DDDC00;color:#333;">7</div>Energia limpa<span class="ods-soon">(em breve)</span></div>
+    <div class="ods-item"><div class="ods-icon" style="background:#3F7E44;">15</div>Vida terrestre</div>
+    <div class="ods-item"><div class="ods-icon" style="background:#19486A;">17</div>Parcerias globais</div>
+  </div>
+</div>
+
+<!-- ABA POR CAMPUS -->
+<div class="tab" id="tab-campus">
+  <div style="background:#E8F5E9;border:1px solid var(--unitau-green);border-radius:10px;padding:10px 13px;font-size:11px;color:#1B6B3A;line-height:1.6;margin-bottom:14px;">
+    ℹ️ Exibindo unidades com população estudantil <strong>(Camada 1)</strong>. Unidades administrativas e inativas são monitoradas internamente pelo CEUS.
+  </div>
+  <div class="sec-title">Consumo por campus · out/2025<button class="info-btn" onclick="openModal('campus_lista')" aria-label="Entenda">ⓘ</button></div>
+  <div class="campus-list" id="campus-list"></div>
+  <div class="chart-card" style="margin-top:14px;">
+    <div class="chart-header">
+      <span class="chart-title">Distribuição comparada (m³ · out/2025)</span>
+      <button class="info-btn" onclick="openModal('grafico_campus')" aria-label="Entenda este gráfico">ⓘ</button>
+    </div>
+    <div class="chart-wrap" id="campusChartWrap">
+      <canvas id="chartCampus" role="img" aria-label="Barras horizontais de consumo de água por campus em outubro de 2025"></canvas>
+    </div>
+    <div class="legend" style="margin-top:10px;">
+      <div class="leg"><div class="leg-dot" style="background:var(--unitau-green);"></div>abaixo da média</div>
+      <div class="leg"><div class="leg-dot" style="background:#AAAA00;"></div>dentro do esperado</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--sem-r);"></div>acima do padrão</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABA METODOLOGIA -->
+<div class="tab" id="tab-meto">
+  <div class="meto-grid">
+    <div class="meto-card">
+      <div class="meto-header"><div class="meto-title">Critério do semáforo</div><button class="info-btn" onclick="openModal('meto_semaforo')" aria-label="Entenda">ⓘ</button></div>
+      <div class="meto-body">🟢 <strong>Verde</strong> — consumo ≤ 90% da média histórica<br>🟡 <strong>Amarelo</strong> — entre 90% e 110% da média<br>🔴 <strong>Vermelho</strong> — acima de 110% da média<br><br>Referência: média dos meses anteriores disponíveis (jun–set/2025).</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--unitau-green);">
+      <div class="meto-header"><div class="meto-title">Métricas utilizadas</div><button class="info-btn" onclick="openModal('meto_metricas')" aria-label="Entenda">ⓘ</button></div>
+      <div class="meto-body"><strong>Per capita:</strong> m³ ÷ população ÷ dias úteis × 1.000<br><br><strong>Por m²:</strong> m³ ÷ área operacional (TR PE-87/25)<br><br>Outubro/2025: <strong>23 dias úteis</strong>.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:#DDDC00;">
+      <div class="meto-header"><div class="meto-title">Camadas de dados</div><button class="info-btn" onclick="openModal('meto_camadas')" aria-label="Entenda">ⓘ</button></div>
+      <div class="meto-body"><strong>Camada 1 (pública):</strong> unidades com população estudantil.<br><br><strong>Camada 2 (interna CEUS):</strong> todas as 40 contas SABESP, para gestão e rankings internacionais.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--unitau-cyan);">
+      <div class="meto-header"><div class="meto-title">Benchmark internacional</div><button class="info-btn" onclick="openModal('meto_benchmark')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="meto-body">UI GreenMetric — 1.745 universidades · 105 países.<br><br>Referência USP-EACH: <strong>10,28 L/pessoa/dia</strong>.<br>UNITAU out/2025: <strong id="pc-ref">—</strong> L/pessoa/dia.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--unitau-navy);">
+      <div class="meto-title">Fontes dos dados</div>
+      <div class="meto-body">Faturas SABESP (PDF · 566 páginas) · Planilha PRA/Contabilidade · Inventário Físico Fase 1 CEUS · TR PE-87/25 (metragens) · Camada Populacional V2 (2026/1) · RH UNITAU</div>
+    </div>
+    <div class="meto-card" style="border-left-color:#AAAA00;">
+      <div class="meto-title">Lacunas identificadas</div>
+      <div class="meto-body">· Campus Caraguatatuba: dentro do Shopping Serramar — forma de cobrança a esclarecer<br>· Campus Cruzeiro: imóvel locado, infraestrutura em regularização<br>· 16 contas: faturas out/2025 ainda não localizadas</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer class="footer">
+  <strong>CEUS — Centro UNITAU Sustentável</strong><br>
+  Observatório UNITAU Sustentável · Versão piloto · Outubro/2025 · Taubaté<br>
+  Alinhado ao <strong>ODS 6 — ONU</strong> · Dados: SABESP · PRA · CEUS · Universidade de Taubaté
+</footer>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
+<script>
+const campusData = [
+  {name:'Bom Conselho',sub:'Piscina / Ed. Física 🏊',m3:851,pop:800,sem:'r',label:'acima do padrão'},
+  {name:'Bom Conselho',sub:'Enf., Med., Saúde',m3:761,pop:1800,sem:'v',label:'abaixo da média'},
+  {name:'Complexo Central',sub:'PREF · PRG · PREX · EAD',m3:266,pop:1200,sem:'a',label:'dentro do esperado'},
+  {name:'CJI — Jurídico',sub:'Parque Barbosa de Oliveira',m3:153,pop:900,sem:'v',label:'abaixo da média'},
+  {name:'Campus JUTA',sub:'DECT · Engenharia',m3:238,pop:700,sem:'r',label:'acima do padrão'},
+  {name:'Campus Rural',sub:'DCA · Veterinária',m3:86,pop:320,sem:'v',label:'abaixo da média'},
+  {name:'Clínica Fisioterapia',sub:'R. Pasqua Pastorelli, 30',m3:56,pop:180,sem:'a',label:'dentro do esperado'},
+  {name:'Colégio Balbi',sub:'R. dos Operários, 153',m3:43,pop:611,sem:'v',label:'abaixo da média'},
+  {name:'DAU — Arquitetura',sub:'Pç. Felix Guisard, 120',m3:37,pop:220,sem:'v',label:'abaixo da média'},
+];
+const totalM3=campusData.reduce((s,c)=>s+c.m3,0);
+const totalPop=7645;
+const totalArea=100752;
+const diasUteis=23;
+const pc=totalM3*1000/totalPop/diasUteis;
+const m2v=totalM3*1000/totalArea;
+
+const modals={
+  estrutura:{t:'Estrutura monitorada',b:'Base institucional do Observatório: 25 unidades físicas mapeadas em Taubaté, com área total de 100.752 m². A população inclui 5.529 alunos de graduação, 391 de pós-graduação, 570 do Colégio Balbi, 595 professores e 560 funcionários técnico-administrativos.'},
+  total:{t:'Consumo total',b:'Volume total de água monitorado pelo Observatório UNITAU Sustentável no período. Inclui todas as unidades da Camada 1 — aquelas com população estudantil.'},
+  percapita:{t:'Consumo per capita',b:'Quantidade média de água utilizada por pessoa, por dia útil. Calculado como: total m³ ÷ número de pessoas ÷ dias úteis × 1.000.'},
+  m2:{t:'Consumo por m²',b:'Relaciona o consumo à área física monitorada. Permite comparar unidades de tamanhos diferentes. Calculado como: total m³ ÷ área total operacional × 1.000.'},
+  ligacoes:{t:'Ligações SABESP',b:'Quantidade de contas ou hidrômetros atualmente monitorados. Cada ligação corresponde a um ponto de medição da SABESP em nome da UNITAU.'},
+  grafico_hist:{t:'Entenda este gráfico',b:'Mostra o consumo total mensal de água da UNITAU de junho a outubro de 2025, em m³. A linha tracejada verde é a média histórica do período. Meses abaixo da linha indicam economia.'},
+  campus_lista:{t:'Comparação por campus',b:'Verde = consumo abaixo da média histórica. Amarelo = dentro do esperado (90-110%). Vermelho = acima do padrão. O valor L/p/dia é o consumo per capita daquele campus.'},
+  grafico_campus:{t:'Entenda este gráfico',b:'Barras horizontais mostrando o consumo de água em m³ por campus em outubro de 2025. As cores seguem o semáforo de sustentabilidade.'},
+  meto_semaforo:{t:'Como funciona o semáforo?',b:'Compara o consumo do mês com a média dos meses anteriores. Abaixo de 90% = verde. Entre 90% e 110% = amarelo. Acima de 110% = vermelho.'},
+  meto_metricas:{t:'Por que duas métricas?',b:'O per capita é o padrão internacional de comparação entre universidades (UI GreenMetric). O consumo por m² permite comparar unidades de tamanhos muito diferentes de forma justa.'},
+  meto_camadas:{t:'O que são as camadas?',b:'Camada 1 (pública): unidades com alunos — exibidas neste painel. Camada 2 (interna CEUS): todas as 40 contas SABESP, inclusive administrativas e inativas — para gestão e rankings.'},
+  meto_benchmark:{t:'UI GreenMetric',b:'Principal ranking de sustentabilidade universitária mundial, com 1.745 universidades em 105 países. Avalia consumo de água, energia, gestão de resíduos e outros indicadores. A UNITAU poderá participar à medida que o Observatório consolida seus dados.'},
+};
+
+function openModal(key){const m=modals[key];if(!m)return;document.getElementById('modal-title').textContent=m.t;document.getElementById('modal-body').textContent=m.b;document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+
+function animCount(el,target,mode,dur){
+  const t0=performance.now();
+  const run=now=>{
+    const p=Math.min((now-t0)/dur,1);
+    const ease=p<.5?2*p*p:-1+(4-2*p)*p;
+    const v=target*ease;
+    if(mode==='int')el.textContent=Math.round(v).toLocaleString('pt-BR');
+    else if(mode==='dec1')el.textContent=v.toFixed(1);
+    else if(mode==='dec2')el.textContent=v.toFixed(2);
+    if(p<1)requestAnimationFrame(run);
+    else{
+      if(mode==='int')el.textContent=Math.round(target).toLocaleString('pt-BR');
+      else if(mode==='dec1')el.textContent=target.toFixed(1);
+      else if(mode==='dec2')el.textContent=target.toFixed(2);
+    }
+  };
+  requestAnimationFrame(run);
+}
+
+const semColor=s=>s==='v'?'#6ECA97':s==='a'?'#AAAA00':'#CD1C17';
+const chipCls=s=>s==='v'?'chip-v':s==='a'?'chip-a':'chip-r';
+const chipLbl=s=>s==='v'?'abaixo da média':s==='a'?'dentro do esperado':'acima do padrão';
+const gc='#E8EEF5',tc='#5A7A9A';
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    animCount(document.getElementById('ev-inst'),25,'int',800);
+    animCount(document.getElementById('ev-area'),100752,'int',1100);
+    animCount(document.getElementById('ev-pop'),7645,'int',1000);
+    animCount(document.getElementById('ev-lig'),24,'int',800);
+    animCount(document.getElementById('kv-total'),totalM3,'int',1200);
+    animCount(document.getElementById('kv-pc'),pc,'dec1',1200);
+    animCount(document.getElementById('kv-m2'),m2v,'dec1',1000);
+    animCount(document.getElementById('kv-lig'),24,'int',800);
+    const ref=document.getElementById('pc-ref');
+    if(ref)ref.textContent=pc.toFixed(1);
+  },250);
+
+  new Chart(document.getElementById('chartHist'),{
+    type:'bar',
+    data:{
+      labels:['jun/25','jul/25','ago/25','set/25','out/25'],
+      datasets:[
+        {label:'m³',data:[2119,2263,2059,2312,2346],backgroundColor:['#25BBE9','#25BBE9','#25BBE9','#25BBE9','#AAAA00'],borderRadius:4},
+        {label:'Média',data:[2188,2188,2188,2188,2188],type:'line',borderColor:'#6ECA97',borderDash:[5,3],borderWidth:2,pointRadius:0,fill:false}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},min:1800,ticks:{color:tc,font:{size:10},callback:v=>v.toLocaleString('pt-BR')+' m³'}}}}
+  });
+
+  const maxM3=Math.max(...campusData.map(c=>c.m3));
+  const list=document.getElementById('campus-list');
+  campusData.forEach(c=>{
+    const pct=Math.round(c.m3/maxM3*100);
+    const pcv=(c.m3*1000/c.pop/diasUteis).toFixed(1);
+    const div=document.createElement('div');
+    div.className='campus-row';
+    div.innerHTML=`<div class="campus-top"><div><div class="campus-name">${c.name}</div><div class="campus-sub">${c.sub}</div></div><div><div class="campus-val">${c.m3.toLocaleString('pt-BR')} m³</div><div class="campus-pc">${pcv} L/p/dia</div></div></div><div class="bar-track"><div class="bar-fill" data-pct="${pct}" style="background:${semColor(c.sem)};"></div></div><span class="chip ${chipCls(c.sem)}" style="font-size:9px;"><span class="chip-dot"></span>${chipLbl(c.sem)}</span>`;
+    list.appendChild(div);
+  });
+  setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'),350);
+
+  const h=campusData.length*44+70;
+  document.getElementById('campusChartWrap').style.height=h+'px';
+  new Chart(document.getElementById('chartCampus'),{
+    type:'bar',
+    data:{labels:campusData.map(c=>c.name),datasets:[{label:'m³',data:campusData.map(c=>c.m3),backgroundColor:campusData.map(c=>semColor(c.sem)),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>v+' m³'}},y:{grid:{display:false},ticks:{color:tc,font:{size:10}}}}}
+  });
+});
+
+function goTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
