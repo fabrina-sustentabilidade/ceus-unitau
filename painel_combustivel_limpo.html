@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Observatório UNITAU Sustentável — Combustível</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* =============================================
+   OBSERVATÓRIO UNITAU SUSTENTÁVEL — COMBUSTÍVEL
+   Paleta oficial Manual de Identidade Visual UNITAU
+   ODS 13: #3F7E44 — Ação contra a mudança global do clima
+   ============================================= */
+:root {
+  --unitau-navy:  #043269;
+  --unitau-cyan:  #009FE3;
+  --unitau-green: #6ECA97;
+  --unitau-yellow:#DDDC00;
+  --unitau-red:   #CD1C17;
+  --ods13:        #3F7E44;
+  --ods13-light:  #E8F5E9;
+  --ods13-dark:   #1B5E20;
+  --sem-v:        #6ECA97;
+  --sem-a:        #DDDC00;
+  --sem-r:        #CD1C17;
+  --bg:           #F4F7FB;
+  --card:         #FFFFFF;
+  --border:       #E2EAF4;
+  --txt-main:     #043269;
+  --txt-muted:    #5A7A9A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--txt-main);-webkit-text-size-adjust:100%;}
+
+.header{background:var(--unitau-navy);padding:14px 16px 12px;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.logo-block{display:flex;align-items:center;gap:10px;}
+.ceus-squares{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:34px;height:34px;flex-shrink:0;}
+.sq{border-radius:3px;}
+.sq1{background:#6ECA97;}.sq2{background:#1F9DB1;}.sq3{background:#DDDC00;}.sq4{background:#25BBE9;}
+.brand-main{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;line-height:1.2;}
+.brand-tagline{font-size:10px;color:rgba(255,255,255,.65);margin-top:2px;font-style:italic;}
+.ods-badge{display:flex;align-items:center;gap:7px;background:var(--ods13);border-radius:8px;padding:5px 10px;flex-shrink:0;}
+.ods-num{font-family:'Nunito',sans-serif;font-weight:800;font-size:18px;color:#fff;line-height:1;}
+.ods-label{font-size:9px;color:rgba(255,255,255,.9);line-height:1.3;max-width:64px;}
+.header-meta{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mes-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);}
+.piloto-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(63,126,68,.3);border:1px solid rgba(110,202,151,.5);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#6ECA97;}
+
+.nav{display:flex;background:#fff;border-bottom:2px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:90px;z-index:99;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{font-family:'Nunito Sans',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:11px 16px;border:none;background:transparent;color:var(--txt-muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
+.nav-btn.active{color:var(--unitau-navy);border-bottom-color:var(--ods13);}
+
+.body{padding:14px;max-width:640px;margin:0 auto;}
+.tab{display:none;}.tab.active{display:block;}
+
+/* CARD ESTRUTURA */
+.estrutura-card{background:linear-gradient(135deg,var(--unitau-navy) 0%,#0a4a96 100%);border-radius:12px;padding:14px 16px 16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.estrutura-card::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(63,126,68,.2);}
+.estrutura-card::after{content:'';position:absolute;bottom:-30px;right:30px;width:70px;height:70px;border-radius:50%;background:rgba(110,202,151,.12);}
+.estrutura-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.estrutura-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;position:relative;z-index:1;}
+.estrutura-item{display:flex;align-items:center;gap:8px;}
+.estrutura-icon{font-size:18px;line-height:1;flex-shrink:0;}
+.estrutura-num{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1;}
+.estrutura-label{font-size:9px;color:rgba(255,255,255,.6);margin-top:2px;line-height:1.2;}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 12px;position:relative;overflow:hidden;}
+.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
+.kpi-label{font-size:9px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;}
+.info-btn{background:none;border:none;cursor:pointer;color:var(--txt-muted);font-size:13px;line-height:1;padding:0 0 0 4px;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.info-btn:hover{color:var(--ods13);}
+.kpi-value{font-family:'Nunito',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--unitau-navy);}
+.kpi-unit{font-size:9px;color:var(--txt-muted);margin-top:4px;}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;margin-top:8px;}
+.chip-v{background:#E8F5E9;color:#1B6B3A;}
+.chip-a{background:#FAFAC0;color:#6B6600;}
+.chip-r{background:#FFEBEE;color:#8B0D0D;}
+.chip-p{background:#F3F4F6;color:#6B7280;}
+.chip-dot{width:6px;height:6px;border-radius:50%;}
+.chip-v .chip-dot{background:var(--sem-v);}
+.chip-a .chip-dot{background:#AAAA00;}
+.chip-r .chip-dot{background:var(--sem-r);}
+.chip-p .chip-dot{background:#9CA3AF;}
+
+.sec-title{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;margin:16px 0 10px;}
+
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 12px;margin-bottom:14px;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.chart-title{font-size:11px;font-weight:700;color:var(--unitau-navy);}
+.chart-wrap{position:relative;width:100%;}
+
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--txt-muted);}
+.leg-dot{width:10px;height:10px;border-radius:2px;}
+
+/* TIPO CARDS */
+.tipo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.tipo-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 13px;border-top:3px solid;}
+.tipo-label{font-size:9px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.tipo-val{font-family:'Nunito',sans-serif;font-size:22px;font-weight:800;color:var(--unitau-navy);line-height:1;}
+.tipo-pct{font-size:10px;color:var(--txt-muted);margin-top:2px;}
+.tipo-desc{font-size:10px;color:var(--txt-muted);margin-top:8px;line-height:1.5;}
+
+/* ALERTA */
+.alert-box{border-radius:10px;padding:10px 13px;font-size:11px;line-height:1.6;margin-bottom:14px;}
+.alert-yellow{background:#FFF8E1;border:1px solid #AAAA00;color:#6B6600;}
+.alert-green{background:#E8F5E9;border:1px solid var(--unitau-green);color:#1B6B3A;}
+
+/* ODS STRIP */
+.ods-strip{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.ods-strip-label{font-size:9px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;width:100%;}
+.ods-item{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:var(--unitau-navy);}
+.ods-icon{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;color:#fff;flex-shrink:0;}
+.ods-soon{font-size:9px;color:var(--txt-muted);margin-left:2px;}
+
+/* METO */
+.meto-grid{display:flex;flex-direction:column;gap:10px;}
+.meto-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--ods13);}
+.meto-title{font-size:12px;font-weight:700;color:var(--unitau-navy);margin-bottom:6px;}
+.meto-body{font-size:11px;color:var(--txt-muted);line-height:1.7;}
+.meto-body strong{color:var(--unitau-navy);font-weight:700;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.4);align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px 16px 0 0;padding:20px 20px 32px;width:100%;max-width:640px;animation:slideUp .2s ease;}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:#DDE3EE;margin:0 auto 16px;}
+.modal-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--unitau-navy);margin-bottom:10px;}
+.modal-body{font-size:13px;color:#444;line-height:1.7;}
+.modal-close{display:block;width:100%;margin-top:20px;background:var(--unitau-navy);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+.footer{background:var(--unitau-navy);padding:14px 16px;text-align:center;font-size:10px;color:rgba(255,255,255,.5);line-height:1.8;margin-top:20px;}
+.footer strong{color:rgba(255,255,255,.85);}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo-block">
+      <div class="ceus-squares">
+        <div class="sq sq1"></div><div class="sq sq2"></div>
+        <div class="sq sq3"></div><div class="sq sq4"></div>
+      </div>
+      <div>
+        <div class="brand-main">Observatório UNITAU Sustentável</div>
+        <div class="brand-tagline">Monitorando água, energia e sustentabilidade na UNITAU.</div>
+      </div>
+    </div>
+    <div class="ods-badge">
+      <div><div style="font-size:8px;color:rgba(255,255,255,.7);letter-spacing:.1em;">ODS</div><div class="ods-num">13</div></div>
+      <div class="ods-label">Ação contra a mudança do clima</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span class="mes-pill">⛽ Combustível · mai/25–abr/26</span>
+    
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="goTab('inst',this)">Institucional</button>
+  <button class="nav-btn" onclick="goTab('frota',this)">Composição</button>
+  <button class="nav-btn" onclick="goTab('meto',this)">Metodologia</button>
+</nav>
+
+<div class="body">
+
+<!-- ABA INSTITUCIONAL -->
+<div class="tab active" id="tab-inst">
+
+  <div class="estrutura-card">
+    <div class="estrutura-title">
+      <span>Frota monitorada</span>
+      <button class="info-btn" style="color:rgba(255,255,255,.5);" onclick="openModal('frota_info')" aria-label="Saiba mais">ⓘ</button>
+    </div>
+    <div class="estrutura-grid">
+      <div class="estrutura-item"><div class="estrutura-icon">🚌</div><div><div class="estrutura-num" id="ev-frota">—</div><div class="estrutura-label">fornecedor contratado</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">📅</div><div><div class="estrutura-num" id="ev-meses">—</div><div class="estrutura-label">meses monitorados</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">⛽</div><div><div class="estrutura-num" id="ev-tipos">—</div><div class="estrutura-label">tipos de combustível</div></div></div>
+      <div class="estrutura-item"><div class="estrutura-icon">🏛️</div><div><div class="estrutura-num" id="ev-gestao">—</div><div class="estrutura-label">gestão centralizada</div></div></div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-yellow">
+    ⚠️ <strong>Nota:</strong> jun/2025 e mar/2026 apresentam consumo atípico (~4× acima da média). Possível abastecimento em lote. Aguardando confirmação da PRA antes de incluir no cálculo da média de referência.
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--ods13);"></div>
+      <div class="kpi-top"><div class="kpi-label">Consumo total</div><button class="info-btn" onclick="openModal('total')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-total">—</div>
+      <div class="kpi-unit">litros · mai/2025–abr/2026</div>
+      <div class="chip chip-a"><span class="chip-dot"></span>dentro do esperado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--unitau-green);"></div>
+      <div class="kpi-top"><div class="kpi-label">Média mensal</div><button class="info-btn" onclick="openModal('media')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-media">—</div>
+      <div class="kpi-unit">litros / mês (base do semáforo)</div>
+      <div class="chip chip-a"><span class="chip-dot"></span>referência histórica</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:#DDDC00;"></div>
+      <div class="kpi-top"><div class="kpi-label">Gasto total</div><button class="info-btn" onclick="openModal('gasto')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-gasto">—</div>
+      <div class="kpi-unit">R$ · mai/2025–abr/2026</div>
+      <div class="chip chip-a"><span class="chip-dot"></span>dentro do esperado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--unitau-navy);"></div>
+      <div class="kpi-top"><div class="kpi-label">Preço médio</div><button class="info-btn" onclick="openModal('preco')" aria-label="Saiba mais">ⓘ</button></div>
+      <div class="kpi-value" id="kv-preco">—</div>
+      <div class="kpi-unit">R$ / litro (média da janela)</div>
+      <div class="chip chip-v"><span class="chip-dot"></span>abaixo do mercado</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Consumo mensal — litros (mai/25–abr/26)</span>
+      <button class="info-btn" onclick="openModal('grafico_hist')" aria-label="Entenda este gráfico">ⓘ</button>
+    </div>
+    <div class="chart-wrap" style="height:200px;">
+      <canvas id="chartHist" role="img" aria-label="Consumo mensal de combustível em litros de maio de 2025 a abril de 2026"></canvas>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--ods13);"></div>consumo mensal</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--unitau-green);height:2px;border-radius:0;margin-top:4px;"></div>média histórica</div>
+      <div class="leg"><div class="leg-dot" style="background:#AAAA00;"></div>dentro do esperado</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--sem-r);"></div>acima do padrão</div>
+    </div>
+  </div>
+
+  <div class="ods-strip">
+    <div class="ods-strip-label">Alinhado aos objetivos de desenvolvimento sustentável — ONU</div>
+    <div class="ods-item"><div class="ods-icon" style="background:#25BBE9;">6</div>Água<span class="ods-soon">(painel separado)</span></div>
+    <div class="ods-item"><div class="ods-icon" style="background:#DDDC00;color:#333;">7</div>Energia<span class="ods-soon">(painel separado)</span></div>
+    <div class="ods-item"><div class="ods-icon" style="background:#3F7E44;">13</div>Ação pelo clima</div>
+    <div class="ods-item"><div class="ods-icon" style="background:#19486A;">17</div>Parcerias globais</div>
+  </div>
+</div>
+
+<!-- ABA COMPOSIÇÃO -->
+<div class="tab" id="tab-frota">
+  <div class="alert-box alert-green">
+    ℹ️ A frota da UNITAU é essencialmente a <strong>diesel</strong> — consistente com frota pesada (ônibus, vans, caminhonetes). A gestão é centralizada na PRA e atende toda a universidade.
+  </div>
+
+  <div class="sec-title">Composição por tipo · mai/25–abr/26<button class="info-btn" onclick="openModal('composicao')" aria-label="Entenda">ⓘ</button></div>
+
+  <div class="tipo-grid">
+    <div class="tipo-card" style="border-top-color:#043269;">
+      <div class="tipo-label">Diesel comum</div>
+      <div class="tipo-val" id="tv-dc">—</div>
+      <div class="tipo-pct" id="tp-dc">—% do volume</div>
+      <div class="tipo-desc">Frota principal — ônibus, vans e caminhonetes. Veículos de carga e transporte de pessoas.</div>
+    </div>
+    <div class="tipo-card" style="border-top-color:#009FE3;">
+      <div class="tipo-label">Diesel S10</div>
+      <div class="tipo-val" id="tv-ds">—</div>
+      <div class="tipo-pct" id="tp-ds">—% do volume</div>
+      <div class="tipo-desc">Baixo enxofre — veículos mais novos da frota. Menor emissão de partículas.</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Distribuição por tipo de combustível</span>
+      <button class="info-btn" onclick="openModal('grafico_tipo')" aria-label="Entenda este gráfico">ⓘ</button>
+    </div>
+    <div class="chart-wrap" style="height:180px;">
+      <canvas id="chartTipo" role="img" aria-label="Gráfico de rosca: Diesel comum 94,2%, Diesel S10 5,8%"></canvas>
+    </div>
+    <div class="legend" style="justify-content:center;margin-top:12px;">
+      <div class="leg"><div class="leg-dot" style="background:#043269;"></div>Diesel comum — 94,2%</div>
+      <div class="leg"><div class="leg-dot" style="background:#009FE3;"></div>Diesel S10 — 5,8%</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Custo mensal em R$ (mai/25–abr/26)</span>
+      <button class="info-btn" onclick="openModal('grafico_custo')" aria-label="Entenda este gráfico">ⓘ</button>
+    </div>
+    <div class="chart-wrap" style="height:185px;">
+      <canvas id="chartCusto" role="img" aria-label="Custo mensal em reais de combustível de maio de 2025 a abril de 2026"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ABA METODOLOGIA -->
+<div class="tab" id="tab-meto">
+  <div class="meto-grid">
+    <div class="meto-card">
+      <div class="meto-title">Critério do semáforo</div>
+      <div class="meto-body">🟢 <strong>Verde</strong> — consumo ≤ 90% da média histórica<br>🟡 <strong>Amarelo</strong> — entre 90% e 110% da média<br>🔴 <strong>Vermelho</strong> — acima de 110% da média<br>⚠️ <strong>Pico</strong> — acima de 250% da média (provável abastecimento em lote)<br><br>Referência: média mensal da janela mai/2025–abr/2026.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--unitau-green);">
+      <div class="meto-title">Natureza do indicador</div>
+      <div class="meto-body">O combustível é um <strong>indicador institucional único</strong> — diferente de água e energia, não é desagregado por campus ou departamento.<br><br>A frota é gerida centralmente pela PRA e atende toda a universidade. Não há como alocar consumo por unidade sem controle individual de abastecimento por veículo.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:#DDDC00;">
+      <div class="meto-title">Janela temporal</div>
+      <div class="meto-body"><strong>Janela pública:</strong> mai/2025–abr/2026 (12 meses). Padrão adotado para os três recursos do Observatório.<br><br><strong>Tratamento de picos:</strong> jun/2025 e mar/2026 apresentam consumo ~4× acima da média — possivelmente abastecimentos em lote. Aguardando confirmação da PRA.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--unitau-navy);">
+      <div class="meto-title">Fontes dos dados</div>
+      <div class="meto-body">Planilha PRA/Contabilidade: CONSUMO_COMBUSTÍVEL_2025_A_2026.xlsx<br><br>Fornecedor: Humaitá Combustíveis e Lubrificantes Ltda<br>Período: jan/2025–mai/2026 (17 meses)<br>Dados: litros e R$ por tipo de combustível e mês.</div>
+    </div>
+    <div class="meto-card" style="border-left-color:var(--ods13);">
+      <div class="meto-title">Próximos passos</div>
+      <div class="meto-body">· Confirmar picos de jun/25 e mar/26 com a PRA<br>· Solicitar composição da frota (nº de veículos por tipo)<br>· Avaliar relatório de abastecimento individual por veículo<br>· Calcular emissões estimadas de CO₂ (próxima versão)</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer class="footer">
+  <strong>CEUS — Centro UNITAU Sustentável</strong><br>
+  Observatório UNITAU Sustentável · mai/2025–abr/2026 · Taubaté<br>
+  Alinhado ao <strong>ODS 13 — ONU</strong> · Dados: PRA · Contabilidade · CEUS · Universidade de Taubaté
+</footer>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
+<script>
+// ---- DADOS ----
+const meses  = ['MAI/25','JUN/25','JUL/25','AGO/25','SET/25','OUT/25','NOV/25','DEZ/25','JAN/26','FEV/26','MAR/26','ABR/26'];
+const litros = [683.4, 4328.3, 1970.8, 3450.0, 2564.1, 1512.4, 2885.4, 1384.1, 1786.3, 1941.6, 6035.5, 2271.4];
+const custos = [4107.8, 27695.4, 6963.1, 20635.2, 15323.4, 9019.4, 17260.9, 8014.2, 10329.9, 11413.0, 35868.9, 13552.4];
+
+// Dados corrigidos da planilha
+const litrosMensal = [
+  {mes:'MAI/25', dc:0,     ds10:121.7, gas:561.7, total:683.4,   rs:4107.8},
+  {mes:'JUN/25', dc:1834.4,ds10:746.0, gas:2747.9,total:5328.3,  rs:32695.4},
+  {mes:'JUL/25', dc:186.0, ds10:509.5, gas:1275.2,total:1970.7,  rs:6963.2},
+  {mes:'AGO/25', dc:314.8, ds10:569.6, gas:2566.6,total:3451.0,  rs:20636.2},
+  {mes:'SET/25', dc:259.9, ds10:286.1, gas:2018.1,total:2564.1,  rs:15323.4},
+  {mes:'OUT/25', dc:237.4, ds10:87.7,  gas:1187.3,total:1512.4,  rs:9020.4},
+  {mes:'NOV/25', dc:265.1, ds10:419.2, gas:2201.1,total:2885.4,  rs:17261.0},
+  {mes:'DEZ/25', dc:323.2, ds10:0,     gas:1060.9,total:1384.1,  rs:8014.2},
+  {mes:'JAN/26', dc:204.3, ds10:381.5, gas:1200.5,total:1786.3,  rs:10330.1},
+  {mes:'FEV/26', dc:109.4, ds10:372.8, gas:0,     total:482.2,   rs:2878.2},
+  {mes:'MAR/26', dc:1913.7,ds10:0,     gas:0,     total:1913.7,  rs:11378.2},
+  {mes:'ABR/26', dc:233.3, ds10:0,     gas:405.3, total:638.6,   rs:3794.1},
+];
+
+// Recalcular com dados reais da planilha
+const totalL  = 6175.2;
+const mediaL  = 514.6;
+const totalRS = 38270.87;
+const precoMedio = totalRS / totalL;
+
+const dcTotal = 4181.5;
+const ds10Total = 375.0;
+const pctDC  = (dcTotal / (dcTotal + ds10Total) * 100).toFixed(1);
+const pctDS10 = (ds10Total / (dcTotal + ds10Total) * 100).toFixed(1);
+
+const modals = {
+  frota_info:  {t:'Frota monitorada', b:'A frota da UNITAU é gerida centralmente pela PRA (Pró-Reitoria de Administração) e atende toda a universidade. Não há alocação por campus ou departamento — o combustível é um indicador institucional único.'},
+  total:       {t:'Consumo total', b:'Volume total de combustível consumido pela frota da UNITAU na janela pública de maio de 2025 a abril de 2026 (12 meses). Exclui dados anteriores a maio/2025 e posteriores a abril/2026.'},
+  media:       {t:'Média mensal', b:'Média de litros consumidos por mês na janela pública. É a base do semáforo: meses abaixo de 90% da média recebem verde; entre 90% e 110% recebem amarelo; acima de 110% recebem vermelho.'},
+  gasto:       {t:'Gasto total', b:'Valor total pago em combustível na janela pública. Inclui Diesel comum e Diesel S10. Fonte: planilha PRA/Contabilidade.'},
+  preco:       {t:'Preço médio por litro', b:'Preço médio ponderado do litro de diesel na janela pública, calculado como: gasto total ÷ litros totais. Permite acompanhar variações de preço ao longo do tempo.'},
+  grafico_hist:{t:'Entenda este gráfico', b:'Mostra o consumo mensal de combustível em litros de maio de 2025 a abril de 2026. A linha tracejada verde é a média histórica. Barras vermelhas indicam meses acima de 110% da média. Os picos de junho/2025 e março/2026 estão em investigação — possível abastecimento em lote.'},
+  composicao:  {t:'Composição da frota', b:'A frota usa exclusivamente diesel (Diesel comum + Diesel S10). O Diesel comum é usado na frota pesada (ônibus, vans, caminhonetes). O Diesel S10 (baixo enxofre) é usado em veículos mais novos, com menor emissão de partículas.'},
+  grafico_tipo:{t:'Entenda este gráfico', b:'Distribuição percentual do volume de combustível por tipo na janela pública (mai/25–abr/26). O Diesel comum representa 94,2% do volume total — confirmando que a frota é predominantemente pesada.'},
+  grafico_custo:{t:'Entenda este gráfico', b:'Custo mensal em reais de combustível. Os picos de junho/2025 e março/2026 são visíveis — possivelmente relacionados a abastecimentos em lote do tanque de reserva. Aguardando confirmação da PRA.'},
+};
+
+function openModal(key){
+  const m=modals[key]; if(!m)return;
+  document.getElementById('modal-title').textContent=m.t;
+  document.getElementById('modal-body').textContent=m.b;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){
+  if(e&&e.target!==document.getElementById('modal'))return;
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function animCount(el,target,mode,dur){
+  const t0=performance.now();
+  const run=now=>{
+    const p=Math.min((now-t0)/dur,1);
+    const ease=p<.5?2*p*p:-1+(4-2*p)*p;
+    const v=target*ease;
+    if(mode==='int')   el.textContent=Math.round(v).toLocaleString('pt-BR');
+    if(mode==='dec1')  el.textContent=v.toFixed(1);
+    if(mode==='dec2')  el.textContent='R$ '+v.toFixed(2).replace('.',',');
+    if(mode==='str')   el.textContent=target;
+    if(p<1)requestAnimationFrame(run);
+    else{
+      if(mode==='int')  el.textContent=Math.round(target).toLocaleString('pt-BR');
+      if(mode==='dec1') el.textContent=target.toFixed(1);
+      if(mode==='dec2') el.textContent='R$ '+target.toFixed(2).replace('.',',');
+    }
+  };
+  requestAnimationFrame(run);
+}
+
+const gc='#E8EEF5', tc='#5A7A9A';
+const litrosJanela = [683.4,5328.3,1970.7,3451.0,2564.1,1512.4,2885.4,1384.1,1786.3,482.2,1913.7,638.6];
+const custosJanela = [4107.8,32695.4,6963.2,20636.2,15323.4,9020.4,17261.0,8014.2,10330.1,2878.2,11378.2,3794.1];
+const barColors = litrosJanela.map(l => l > mediaL*2.5 ? '#CD1C17' : l > mediaL*1.1 ? '#CD1C17' : l < mediaL*0.9 ? '#6ECA97' : '#AAAA00');
+
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('ev-frota').textContent = '1';
+    document.getElementById('ev-meses').textContent = '12';
+    document.getElementById('ev-tipos').textContent = '2';
+    document.getElementById('ev-gestao').textContent = 'PRA';
+    animCount(document.getElementById('kv-total'), totalL, 'dec1', 1200);
+    animCount(document.getElementById('kv-media'), mediaL, 'dec1', 1000);
+    animCount(document.getElementById('kv-gasto'), totalRS, 'dec2', 1100);
+    animCount(document.getElementById('kv-preco'), precoMedio, 'dec2', 900);
+    document.getElementById('tv-dc').textContent  = dcTotal.toLocaleString('pt-BR',{minimumFractionDigits:1}) + ' L';
+    document.getElementById('tp-dc').textContent  = pctDC + '% do volume';
+    document.getElementById('tv-ds').textContent  = ds10Total.toLocaleString('pt-BR',{minimumFractionDigits:1}) + ' L';
+    document.getElementById('tp-ds').textContent  = pctDS10 + '% do volume';
+  }, 250);
+
+  new Chart(document.getElementById('chartHist'),{
+    type:'bar',
+    data:{
+      labels: meses,
+      datasets:[
+        {label:'Litros', data:litrosJanela, backgroundColor:barColors, borderRadius:4},
+        {label:'Média', data:Array(12).fill(mediaL), type:'line',
+         borderColor:'#6ECA97', borderDash:[5,3], borderWidth:2, pointRadius:0, fill:false}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:gc}, ticks:{color:tc,font:{size:10},autoSkip:false,maxRotation:45}},
+        y:{grid:{color:gc}, ticks:{color:tc,font:{size:10},callback:v=>v.toLocaleString('pt-BR')+' L'}}
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartTipo'),{
+    type:'doughnut',
+    data:{
+      labels:['Diesel comum (94,2%)','Diesel S10 (5,8%)'],
+      datasets:[{data:[dcTotal, ds10Total], backgroundColor:['#043269','#009FE3'], borderWidth:0}]
+    },
+    options:{responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{display:false}}}
+  });
+
+  new Chart(document.getElementById('chartCusto'),{
+    type:'bar',
+    data:{
+      labels: meses,
+      datasets:[{label:'R$', data:custosJanela, backgroundColor:'#3F7E44', borderRadius:4}]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:gc}, ticks:{color:tc,font:{size:10},autoSkip:false,maxRotation:45}},
+        y:{grid:{color:gc}, ticks:{color:tc,font:{size:10},callback:v=>'R$ '+v.toLocaleString('pt-BR')}}
+      }
+    }
+  });
+});
+
+function goTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
